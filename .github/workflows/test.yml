@@ -1,0 +1,28 @@
+name: Run nox for feature branches
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.py'
+  push:
+    branches:
+      - 'features/**'
+
+jobs:
+  run-nox:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install nox
+        run: pip install nox
+
+      - name: Run nox
+        run: nox
+
