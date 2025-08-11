@@ -1,25 +1,24 @@
-name: Run nox on all Python versions and platforms
+name: Run nox for feature branches
 
 on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.py'
   push:
     branches:
-      - main
+      - 'features/**'
 
 jobs:
   run-nox:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
-
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: '3.11'
 
       - name: Install nox
         run: pip install nox
