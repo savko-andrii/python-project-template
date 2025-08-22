@@ -1,27 +1,27 @@
-name: Run nox for feature branches
+name: Run tests
 
 on:
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
     paths:
       - '**.py'
-  push:
-    branches:
-      - 'features/**'
+    types: [opened, synchronize, reopened]
 
 jobs:
-  run-nox:
+  test:
+    if: startsWith(github.head_ref, 'features/')
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install nox
-        run: pip install nox
+      - name: Install dependencies
+        run: pip install pytest
 
-      - name: Run nox
-        run: nox
+      - name: Run tests
+        run: pytest
+
